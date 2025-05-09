@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Chikflix</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.0/lottie.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=send" />    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        /* --- Start of Embedded CSS --- */
+    
+        /* Basic Reset & Body Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+    
+        body {
+            font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #141414; /* Slightly off-black for base */
+            color: #ffffff; /* Default to white */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            /* --- Background Image Settings --- */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("./img/background.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+    
+        a {
+            color: #b3b3b3; /* Slightly lighter grey for links */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    
+        /* Page Wrapper */
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+        }
+    
+    
+        /* Header */
+        .page-header {
+            padding: 20px 4%;
+            position: relative;
+            z-index: 5; /* Lower than login container */
+            height: 80px;
+        }
+    
+
+        
+        .logo img {
+             height: 200px; /* Increased from 35px */
+             width: auto;
+             vertical-align: middle;
+             z-index: 1; /* Align image better */
+        }
+    
+        /* Main Login Area */
+        .login-main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 4%; /* Match header padding */
+            position: relative;
+            z-index: 10; /* Increased z-index */
+        }
+    
+        .login-container {
+            background-color: rgba(0, 0, 0, 0.80); /* Slightly more opaque */
+            padding: 60px 68px 40px; /* Keep Netflix padding */
+            border-radius: 4px;
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 90px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 20; /* Higher z-index than other elements */
+        }
+    
+        /* Flow Sections */
+        .flow-section {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .flow-section.inactive {
+            display: none;
+        }
+        .flow-section.active {
+            display: block;
+        }
+    
+        /* Section Header Styling */
+        .section-header {
+            font-size: 2rem; /* 32px */
+            margin-bottom: 28px;
+            font-weight: 700; /* Bold */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            color: #ffffff; /* Ensure white */
+        }
+         /* Style the step icon - optional */
+        .step-icon {
+             display: inline-flex;
+             width: 30px;
+             height: 30px;
+             font-size: 1rem;
+             margin-right: 12px; /* More space */
+             background-color: #e50914;
+             color: white;
+             border-radius: 50%;
+             align-items: center;
+             justify-content: center;
+             font-weight: 700; /* Bold */
+         }
+    
+        .back-to-choice-link {
+            font-size: 0.9rem;
+            color: #b3b3b3; /* Light gray color matching Netflix */
+            position: absolute;
+            top: 8px;
+            right: 0;
+            text-decoration: none; /* Remove underline by default */
+        }
+        .back-to-choice-link i { 
+            margin-right: 5px;
+            color: #b3b3b3; /* Ensure icon is also light gray */
+        }
+        .back-to-choice-link:hover { 
+            color: #ffffff; /* White on hover */
+            text-decoration: underline; /* Add underline on hover */
+        }
+    
+    
+        /* Form Elements Styling */
+        .flow-step {
+           width: 100%;
+           margin-bottom: 20px;
+        }
+        .flow-step.inactive { display: none; }
+        .flow-step.active { display: block; }
+    
+    
+        /* Input Styling */
+        .input-group, .mb-3 {
+            margin-bottom: 16px;
+            position: relative;
+        }
+    
+        input[type="email"],
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 16px 20px;
+            background-color: #333333; /* Standard dark input */
+            border: none; /* Ensure no default border */
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 1rem; /* 16px */
+            line-height: 1.2; /* Adjust line height */
+            box-sizing: border-box;
+            /* Add a subtle border for definition */
+            border: 1px solid #333333; /* Same as background initially */
+        }
+        input[type="email"]:focus,
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            background-color: #404040; /* Slightly lighter on focus */
+            border-color: #555555; /* Subtle border highlight on focus */
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b3b3b3; /* Lighter grey for labels */
+            font-size: 0.875rem; /* 14px */
+            font-weight: 500; /* Medium weight */
+        }
+         ::placeholder {
+             color: #8c8c8c; /* Keep standard placeholder color */
+             opacity: 1;
+         }
+    
+    
+        /* Button Styling */
+        .btn {
+            padding: 12px 24px; /* Slightly more horizontal padding */
+            border-radius: 4px;
+            border: none;
+            font-size: 1rem; /* 16px */
+            font-weight: 600; /* Semibold */
+            cursor: pointer;
+            margin-top: 10px;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            vertical-align: middle;
+            line-height: 1.3; /* Better vertical centering */
+            transition: background-color 0.2s ease, opacity 0.2s ease; /* Smooth transitions */
+        }
+        /* Main action buttons full width */
+        #handle-username-check-button,
+        #verifyOTP,
+        #handle-login-button,
+        #new-device-yes-button,
+        #logout-button {
+             width: 100%;
+             padding: 16px; /* Larger padding for main actions */
+             margin-top: 24px;
+             margin-bottom: 12px;
+             font-size: 1.1rem; /* Slightly larger text */
+        }
+    
+        .btn-primary {
+            background-color: #e50914; /* Netflix Red */
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background-color: #f40612; /* Slightly brighter red on hover */
+            opacity: 1; /* Ensure full opacity */
+        }
+    
+        .btn-secondary {
+            background-color: rgba(0, 0, 0, 0.7); /* Keep greyish button */
+            color: #ffffff;
+            border: 1px solid #8c8c8c;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(125, 125, 126, 0.8); /* Slightly lighter/more opaque on hover */
+            opacity: 1;
+        }
+        #new-device-no-button {
+             background-color: rgba(109, 109, 110, 0.7);
+            color: #ffffff;
+        }
+        #new-device-no-button:hover {
+            background-color: rgba(125, 125, 126, 0.8);
+            opacity: 1;
+        }
+    
+        .btn-outline-primary {
+            background-color: transparent;
+            border: 1px solid #8c8c8c; /* Use placeholder grey for border */
+            color: #ffffff;
+            padding: 11px 20px; /* Adjust padding slightly for border */
+        }
+         .btn-outline-primary:hover {
+             background-color: rgba(255, 255, 255, 0.1);
+             border-color: #b3b3b3; /* Lighter border on hover */
+             opacity: 1;
+         }
+    
+        /* Icon styling within buttons */
+        .btn i, .btn .material-icons {
+            margin-right: 10px; /* Slightly more space */
+            vertical-align: middle;
+            font-size: inherit; /* Keep icon size relative */
+            line-height: 1;
+        }
+        .btn .material-icons {
+            font-size: 22px; /* Slightly larger material icons */
+        }
+        .btn .btn-text {
+            display: inline-block;
+        }
+    
+        /* Spinner inside Button */
+        .btn .spinner {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .btn.loading .spinner {
+            display: inline-block;
+        }
+        .btn.loading .btn-text, .btn.loading .btn-icon {
+            visibility: hidden;
+        }
+        .spinner-border {
+             display: inline-block;
+             width: 1.1rem; /* Slightly larger spinner */
+             height: 1.1rem;
+             vertical-align: text-bottom;
+             border: .22em solid currentColor; /* Slightly thicker border */
+             border-right-color: transparent;
+             border-radius: 50%;
+             animation: spinner-border .75s linear infinite;
+        }
+         @keyframes spinner-border {
+           to { transform: rotate(360deg); }
+         }
+    
+    
+        /* Styling for Specific Sections/Elements */
+    
+        /* Initial Choice */
+        #initial-choice-section p { color: #b3b3b3; margin-bottom: 25px; text-align: center; font-size: 1.1rem; }
+        #initial-choice-section .d-flex {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* More gap */
+            flex-wrap: wrap;
+        }
+        #initial-choice-section .btn { padding: 14px 28px; font-size: 1.05rem; } /* Larger initial buttons */
+    
+    
+        /* Sign Up/Sign In Steps */
+        .flow-step h3 {
+             font-size: 1.3rem; /* Slightly larger step titles */
+             font-weight: 600; /* Semibold */
+             margin-bottom: 18px;
+             color: #ffffff; /* Ensure white */
+        }
+        .flow-step p.text-muted { color: #b3b3b3; margin-bottom: 20px; font-size: 0.95rem; line-height: 1.5; }
+        .flow-step strong { color: #ffffff; font-weight: 600; }
+    
+       
+        /* New Device Verification */
+        #deviceVerificationStep .card {
+            background-color: #2a2a2a; /* Darker grey */
+            color: #e0e0e0; /* Slightly off-white */
+            border: 1px solid #404040; /* Subtle border */
+            border-radius: 4px;
+            margin-bottom: 25px; /* More space */
+            padding: 20px; /* More padding */
+        }
+        #deviceVerificationStep .card .d-flex { display: flex; align-items: center; margin-bottom: 12px; font-size: 0.95rem;}
+        #deviceVerificationStep .card i { color: #e50914; margin-right: 12px; font-size: 1.1rem; width: 20px; text-align: center; }
+        #deviceVerificationStep .card span { font-weight: 500; color: #ffffff; } /* Highlight variable data */
+    
+        /* Welcome Section */
+        #welcome-section { text-align: center; }
+        #welcome-section .section-header { justify-content: center; margin-bottom: 20px; }
+        #welcome-section .alert-success {
+            background-color: rgba(30, 150, 90, 0.25); /* Slightly different green tone */
+            color: #8cd4b3; /* Lighter green text */
+            border: 1px solid rgba(30, 150, 90, 0.6);
+            padding: 12px 20px; /* More padding */
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 30px; /* More space */
+            font-weight: 500;
+        }
+         #welcome-section .alert-success i { margin-right: 10px; font-size: 1.1rem; }
+         #welcome-section .welcome-text { font-size: 1.6rem; color: #cccccc; margin-bottom: 8px; }
+         #welcome-section .user-name { font-size: 2rem; color: #ffffff; font-weight: 700; margin-bottom: 15px; }
+         #welcome-section .decoration { font-size: 2.5rem; margin-bottom: 20px; color: #e50914; }
+         #welcome-section .message { color: #b3b3b3; margin-bottom: 35px; font-size: 1.05rem; line-height: 1.6; }
+    
+         /* Device List Styling */
+         #welcome-section h5 {
+             text-align: left;
+             font-size: 1.15rem; /* Slightly larger */
+             color: #cccccc;
+             margin-bottom: 15px;
+             border-bottom: 1px solid #444444;
+             padding-bottom: 10px;
+             font-weight: 600; /* Semibold */
+         }
+         .device-list-container {
+             max-height: 220px; /* More height */
+             overflow-y: auto;
+             margin-bottom: 25px; /* More space */
+             text-align: left;
+             padding-right: 10px;
+         }
+         /* Custom scrollbar for device list */
+        .device-list-container::-webkit-scrollbar { width: 8px; }
+        .device-list-container::-webkit-scrollbar-track { background: #2a2a2a; border-radius: 4px; }
+        .device-list-container::-webkit-scrollbar-thumb { background: #555555; border-radius: 4px; }
+        .device-list-container::-webkit-scrollbar-thumb:hover { background: #777777; }
+    
+         .device-entry {
+             background-color: #333333;
+             padding: 12px 18px; /* More padding */
+             border-radius: 4px;
+             margin-bottom: 12px; /* More space */
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             font-size: 0.95rem; /* Slightly larger */
+         }
+         .device-info span { display: block; line-height: 1.4; }
+         .device-info .device-os { color: #aaaaaa; font-size: 0.85rem; margin-top: 3px; }
+         .device-entry button.delete-device-btn {
+             background: transparent;
+             border: none;
+             color: #aaaaaa;
+             font-size: 1.3rem; /* Larger icon */
+             cursor: pointer;
+             padding: 5px 8px; /* Easier to click */
+             transition: color 0.2s ease;
+         }
+         .device-entry button.delete-device-btn:hover { color: #ffffff; }
+    
+         #welcome-section hr {
+             border: none;
+             border-top: 1px solid #444444;
+             margin: 35px 0; /* More vertical space */
+         }
+    
+        /* Status Message Area */
+        #status {
+            padding: 12px 18px; /* More padding */
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.95rem; /* Slightly larger */
+            font-weight: 500; /* Medium weight */
+            text-align: center;
+            display: none;
+            border: 1px solid transparent;
+            line-height: 1.4;
+        }
+        #status.alert-success {
+            background-color: rgba(30, 150, 90, 0.25);
+            color: #8cd4b3;
+            border-color: rgba(30, 150, 90, 0.6);
+            display: block;
+        }
+        #status.alert-danger {
+            background-color: rgba(220, 53, 69, 0.2); /* Keep Bootstrap-like danger */
+            color: #f0b6bd; /* Keep Bootstrap-like danger text */
+            border-color: rgba(220, 53, 69, 0.5);
+            display: block;
+        }
+         #status.alert-info {
+            background-color: rgba(13, 150, 200, 0.2); /* Adjusted info blue */
+            color: #a6d9ed; /* Adjusted info text */
+            border-color: rgba(13, 150, 200, 0.5);
+            display: block;
+        }
+    
+    
+        /* Footer */
+        .page-footer {
+            background-color: rgba(0, 0, 0, 0.80);
+            padding: 50px 0 30px 0;
+            color: #737373;
+            position: relative;
+            z-index: 5; /* Lower than login container */
+            margin-top: auto;
+        }
+    
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 4%; /* Match header/main padding */
+        }
+    
+        .footer-title { margin-bottom: 30px; font-size: 1rem; color: #737373; } /* Ensure color */
+        .footer-title a { color: #737373; }
+        .footer-title a:hover { text-decoration: underline; }
+    
+        .footer-links {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Wider columns */
+            gap: 12px 15px; /* Row gap, Column gap */
+            margin-bottom: 30px;
+            font-size: 0.8125rem; /* 13px */
+        }
+        .footer-links a { color: #737373; }
+        .footer-links a:hover { text-decoration: underline; }
+    
+        .language-select select {
+            background-color: #000000; /* Black background */
+            color: #999999; /* Lighter grey text */
+            padding: 12px 30px 12px 14px; /* More space for arrow */
+            border: 1px solid #333333; /* Darker border */
+            border-radius: 2px;
+            font-size: 0.9rem; /* 14.4px */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("./img/background.jpg");
+            background-repeat: no-repeat;
+            background-position: right 12px center; /* Position arrow */
+            background-size: 10px; /* Smaller arrow */
+            min-width: 100px; /* Ensure minimum width */
+        }
+
+        .page-footer .powered-by {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+    
+        /* --- Responsive Design --- */
+    
+        /* Responsive Background Images */
+        @media (min-width: 960px) {
+            body {
+                background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("./img/background.jpg");
+            }
+        }
+        @media (min-width: 1280px) {
+            body {
+                background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("./img/background.jpg");
+            }
+        }
+    
+        /* Mobile Adjustments */
+        @media (max-width: 740px) {
+            body {
+                 background-image: none; /* Remove complex background on small screens */
+                 background-color: #000000; /* Solid black */
+            }
+            .login-main {
+                padding: 15px 4%; /* Less padding */
+                align-items: flex-start;
+            }
+            .login-container {
+                padding: 30px 25px; /* Adjusted padding */
+                max-width: 100%;
+                min-height: auto;
+                background-color: transparent; /* Remove container background */
+                margin-bottom: 30px; /* Less margin */
+            }
+            .page-footer {
+                padding: 30px 0;
+                background-color: transparent; /* Remove footer background */
+            }
+             .footer-links {
+                 grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust grid */
+                 gap: 10px;
+             }
+             .footer-content { padding: 0 4%; }
+             .language-select { margin-left: 0; margin-top: 20px; } /* Adjust language select pos */
+             .logo { font-size: 2rem; }
+             .logo img { height: 55px; } /* Increased from 40px for much bigger mobile logo */
+             .section-header { font-size: 1.8rem; margin-bottom: 20px; }
+             .back-to-choice-link { font-size: 0.85rem; top: 5px; }
+             .input-group, .mb-3 { margin-bottom: 12px; } /* Tighter spacing */
+             input[type="email"], input[type="text"], input[type="password"] { padding: 14px 18px; } /* Adjust input padding */
+        }
+        /* Further mobile tweaks */
+         @media (max-width: 500px) {
+            .login-container { padding: 20px 15px; } /* Even less padding */
+            .footer-links { grid-template-columns: 1fr 1fr; gap: 8px;} /* 2 columns */
+            .btn { font-size: 0.95rem; padding: 11px 18px;} /* Adjust button size */
+             #handle-username-check-button,
+             #verifyOTP,
+             #handle-login-button,
+             #new-device-yes-button,
+             #logout-button { padding: 15px; font-size: 1rem; } /* Main button adjustments */
+             .section-header { font-size: 1.6rem; }
+             #welcome-section .user-name { font-size: 1.8rem; }
+         }
+    
+        /* --- End of Embedded CSS --- */
+    </style>
+
+</head>
+<body>
+    <div class="page-wrapper">
+
+        <header class="page-header">
+            <div class="logo">
+                 <img src="img/chikflix.png" alt="Chikflix Logo" onerror="this.style.display='none'; console.error('Logo not found')">
+            </div>
+        </header>
+
+        <main class="login-main">
+
+            <div class="login-container">
+                <div id="status" role="alert"></div>
+                
+                <section id="signup-flow-section" class="flow-section inactive">
+                     <h2 class="section-header">
+                        <span>Sign Up</span>
+                         
+                    </h2>
+                    <a href="#initial-choice-section" class="back-to-signin-link">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </a>
+                    <br>
+                    <br>
+                    <div class="section-content">
+                        <div class="flow-step active" id="step1">
+                             <h3>Enter Your Email</h3>
+                            <div class="mb-3"> <input type="email" id="userid" placeholder="Enter desired email" required>
+                                </div>
+                            <div>
+                                <button id="handle-username-check-button" class="btn btn-primary">
+                                    <span class="material-symbols-outlined">
+                                        send 
+                                    </span>
+                                    <span class="btn-text">&nbsp;Send</span>
+                                    <span class="spinner"> 
+                                        <span class="spinner-border" role="status" aria-hidden="true"></span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flow-step" id="step3">
+                            <h3>Verify Your Email</h3>
+                            <p class="text-muted">Enter the code sent to <strong id="signup-otp-email">your email</strong>.</p>
+                            <div class="mb-3">
+                                <label for="otp" class="form-label">Verification Code (OTP)</label>
+                                <input type="text" id="otp" placeholder="Enter code" required inputmode="numeric" pattern="\d*">
+                                </div>
+                            <div>
+                                <button id="verifyOTP" class="btn btn-primary">
+                                    <i class="fas fa-check-circle me-2 btn-icon"></i>
+                                    <span class="btn-text">Verify Code</span>
+                                    <span class="spinner">
+                                        <span class="spinner-border" role="status" aria-hidden="true"></span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="signin-flow-section" class="flow-section active">
+                    <h2 class="section-header">
+                        <span>Sign In</span>
+                    </h2>
+                    <div class="section-content">
+                        <div class="flow-step active" id="loginStep">
+                            <h3>Enter Your Email</h3>
+                            <div class="mb-3">
+                                <input type="email" id="signinUserid" placeholder="Enter your registered email" required>
+                            </div>
+                            <div style="display: flex; gap: 10px; align-items: center; justify-content: space-between; margin-top: 24px; flex-wrap: wrap;">
+                                <button id="handle-login-button" class="btn btn-primary" style="flex-grow: 1;"> <i class="fas fa-sign-in-alt me-2 btn-icon"></i>
+                                    <span class="btn-text">Sign In</span>
+                                    <span class="spinner">
+                                        <span class="spinner-border" role="status" aria-hidden="true"></span>
+                                    </span>
+                                </button>
+                                <div class="signin-extra" style="width: 100%;">
+                                    <button id="show-signup-from-signin" class="btn btn-secondary w-100 mt-3" style="width: 100%;">
+                                      <i class="fas fa-user-plus btn-icon"></i>
+                                      <span class="btn-text">Sign Up</span>
+                                    </button>
+                                  </div>
+                            </div>
+                        </div>
+
+                        <div class="flow-step inactive" id="signinOTPStep">
+                            <h3>Verify Your Email</h3>
+                            <p class="text-muted">Enter the code sent to <strong id="signin-otp-email">your email</strong>.</p>
+                            <div class="mb-3">
+                                <label for="signin-otp" class="form-label">Verification Code (OTP)</label>
+                                <input type="text" id="signin-otp" placeholder="Enter code" required inputmode="numeric" pattern="\d*">
+                            </div>
+                            <div>
+                                <button id="verifySigninOTP" class="btn btn-primary">
+                                    <i class="fas fa-check-circle me-2 btn-icon"></i>
+                                    <span class="btn-text">Verify Code</span>
+                                    <span class="spinner">
+                                        <span class="spinner-border" role="status" aria-hidden="true"></span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flow-step inactive" id="deviceVerificationStep">
+                            <h3>New Device Detected</h3>
+                            <p class="text-muted" id="deviceVerificationText">
+                                We've detected sign in from a new device. For security, please verify.
+                            </p>
+                            <div class="card mb-4"> <div><i class="fas fa-laptop"></i> Device: <span id="device-name">New Device</span></div>
+                                <div><i class="fas fa-clock"></i> Time: <span id="device-time">Just Now</span></div>
+                            </div>
+                            <div style="display: flex; gap: 15px; flex-wrap: wrap;"> <button id="new-device-yes-button" class="btn btn-primary">
+                                    <i class="fas fa-check-circle me-2 btn-icon"></i>
+                                    <span class="btn-text">Register</span>
+                                </button>
+                                <button id="new-device-no-button" class="btn btn-secondary">
+                                    <i class="fas fa-times-circle me-2 btn-icon"></i>
+                                    <span class="btn-text">Cancel</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="welcome-section" class="flow-section inactive">
+                    <div class="section-content">
+                        <div class="alert-success" role="alert"> <i class="fas fa-check-circle"></i>&nbsp; <span id="welcome-status-text">Login Successful!</span>
+                        </div>
+
+                        <div class="welcome-text">Welcome</div>
+                        <div class="user-name" id="welcome-user-name">User</div>
+                        <div class="message" id="welcome-greeting">
+                            You have successfully logged in.
+                        </div>
+                        <hr> <div style="text-align: center;">
+                            <button id="logout-button" class="btn btn-primary"> <i class="fas fa-sign-out-alt me-2 btn-icon"></i>
+                                <span class="btn-text">Logout</span>
+                                <span class="spinner">
+                                    <span class="spinner-border" role="status" aria-hidden="true"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div> 
+        </main>
+        
+        
+        <footer class="page-footer" style="text-align: center; margin-top: 40px; padding: 20px 0; font-size: 0.9rem; color: #777;">
+            <div class="powered-by">
+                <span>Powered by Hawcx Inc.</span>
+                <img src="img/hawcx-logo.png" alt="Hawcx Logo" style="height: 40px; vertical-align: middle; margin-left: 8px;" onerror="this.style.display='none'; console.error('Hawcx logo not found')">
+            </div>
+        </footer>
+    </div> <script type="module" src="./index.js"></script>
+    
+</body>
+</html>
