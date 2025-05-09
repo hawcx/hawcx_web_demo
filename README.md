@@ -3,6 +3,8 @@
 
 A secure authentication system using WebAssembly (WASM) for cryptographic operations.
 
+For detailed information, check out our [docs](https://docs.hawcx.com/js/quickstart)
+
 ## Installation
 
 ```html
