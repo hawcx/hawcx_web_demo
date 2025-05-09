@@ -1,73 +1,16 @@
+
 # Hawcx Authentication
 
 A secure authentication system using WebAssembly (WASM) for cryptographic operations.
 
 ## Installation
 
-### Using a CDN (Recommended)
-
-Simply add the script tag to your HTML:
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/hawcx-auth@latest/dist/hawcx-auth.umd.min.js"></script>
-```
-
-### Using NPM
-
-```bash
-npm install hawcx-auth
-```
-
-## Usage
-
-### Basic Setup
-
-```html
-<!-- Include from CDN -->
-<script src="https://cdn.jsdelivr.net/npm/hawcx-auth@latest/dist/hawcx-auth.umd.min.js"></script>
-
-<script>
-  // Get the singleton instance
-  const auth = HawcxInitializer.getInstance();
-  
-  // Initialize with your base URL and API key
-  auth.initialize('https://your-api-base-url.com', 'YOUR_API_KEY')
-    .then(response => {
-      if (response.success) {
-        console.log("HawcxAuth Initialized!");
-        // Ready to use authentication methods
-      } else {
-        console.error("Initialization failed:", response.message);
-      }
-    });
-</script>
-```
-
-### Using ES Modules
-
 ```html
 <script type="module">
-  import { HawcxInitializer } from 'https://cdn.jsdelivr.net/npm/hawcx-auth@latest/dist/hawcx-auth.esm.min.js';
+  import { HawcxInitializer } from 'https://websdkcdn.hawcx.com/hawcx-auth.esm.min.js';
   
-  const auth = HawcxInitializer.getInstance();
-  
-  // Initialize and use as before
-  auth.initialize('https://your-api-base-url.com', 'YOUR_API_KEY')
-    .then(/* ... */);
+  const auth = await HawcxInitializer.init('YOUR_API_KEY');
 </script>
-```
-
-### Using NPM Package
-
-```javascript
-// In your JavaScript file
-import { HawcxInitializer } from 'hawcx-auth';
-
-const auth = HawcxInitializer.getInstance();
-
-// Initialize and use as before
-auth.initialize('https://your-api-base-url.com', 'YOUR_API_KEY')
-  .then(/* ... */);
 ```
 
 ## Authentication Methods
@@ -76,33 +19,30 @@ auth.initialize('https://your-api-base-url.com', 'YOUR_API_KEY')
 
 ```javascript
 // Register a new user
-auth.registerUser('user@example.com')
-  .then(response => {
-    if (response.success) {
-      console.log("Verification code sent!", response.data.sessionId);
-      // Prompt user to enter OTP
-    } else {
-      console.error("Registration failed:", response.message);
-    }
-  });
-
+auth.signUp('user@example.com').then(response => {
+  if (response.success) {
+    console.log('Verification code sent!', response.data.sessionId);
+    // Prompt user to enter OTP
+  } else {
+    console.error('Registration failed:', response.message);
+  }
+});
 // Verify OTP for registration
-auth.verifyOTP('123456')
-  .then(response => {
-    if (response.success) {
-      console.log("Registration completed successfully!");
-      // User is now registered
-    } else {
-      console.error("Verification failed:", response.message);
-    }
-  });
+auth.verifyOTP('123456').then(response => {
+  if (response.success) {
+    console.log('Registration completed successfully!');
+    // User is now registered
+  } else {
+    console.error('Verification failed:', response.message);
+  }
+});
 ```
 
 ### User Authentication
 
 ```javascript
 // Authenticate a user
-auth.authenticateUser('user@example.com')
+auth.signIn('user@example.com')
   .then(response => {
     if (response.success) {
       console.log("Signed in successfully!");
@@ -111,7 +51,7 @@ auth.authenticateUser('user@example.com')
       // Store tokens as needed
     } else if (response.errorCode === 'DEVICE_NOT_REGISTERED') {
       // This device is not registered, send verification
-      return auth.addDevice();
+      return await auth.addDevice();
     } else {
       console.error("Authentication failed:", response.message);
     }
@@ -133,9 +73,8 @@ auth.addDevice()
       console.error("Device verification initiation failed:", response.message);
     }
   });
-
 // Verify the OTP for the new device
-auth.verifyOTP('123456')
+auth.verifyOTP('123456', isNewDevice = true})
   .then(response => {
     if (response.success) {
       console.log("New device registered successfully!");
@@ -162,12 +101,8 @@ The authentication methods return a standardized response object:
 ## Browser Compatibility
 
 This library works in all modern browsers that support WebAssembly:
+
 - Chrome 57+
 - Firefox 53+
 - Safari 11+
 - Edge 16+
-
-## License
-
-MIT
-
