@@ -1,7 +1,5 @@
 // main.js - Main entry point for the Hawcx authentication system
   import { HawcxInitializer } from 'https://websdkcdn.hawcx.com/hawcx-auth.esm.min.js';
-// import { HawcxInitializer } from "../dist/hawcx-auth.esm.min.js"
-// import { HawcxInitializer } from "../lib.js"
 
 import { config } from './js/config.js';
 import { initializeUI, showMainSection } from './js/ui.js';
